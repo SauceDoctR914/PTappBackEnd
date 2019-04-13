@@ -2,7 +2,6 @@ export const getOne = model => async (req, res) => {
   try {
     const doc = await model
       .findOne({
-        createdBy: req.user._id,
         _id: req.params.id
       })
       .lean()
@@ -10,7 +9,6 @@ export const getOne = model => async (req, res) => {
     if (!doc) {
       return res.status(404).end();
     }
-
     res.status(200).json({ data: doc });
   } catch (e) {
     console.error(e);
@@ -24,7 +22,6 @@ export const getMany = model => async (req, res) => {
       .find({ createdBy: req.user._id })
       .lean()
       .exec();
-
     res.status(200).json({ data: docs });
   } catch (e) {
     console.error(e);
@@ -48,7 +45,6 @@ export const updateOne = model => async (req, res) => {
     const updatedDoc = await model
       .findOneAndUpdate(
         {
-          createdBy: req.user._id,
           _id: req.params.id
         },
         req.body,
@@ -69,7 +65,6 @@ export const updateOne = model => async (req, res) => {
 export const removeOne = model => async (req, res) => {
   try {
     const removed = await model.findOneAndRemove({
-      createdBy: req.user._id,
       _id: req.params.id
     });
     if (!removed) {
