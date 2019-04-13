@@ -24,6 +24,14 @@ app.use("/api/exercise", exerciseRouter);
 // });
 app.use("/api/workoutplan", workoutplanRouter);
 
+mongoose.connect(
+  "mongodb://127.0.0.1:27017/workout",
+  {
+    useNewUrlParser: true,
+    useCreateIndex: true
+  }
+);
+
 export const start = () => {
   app.listen(6000, () => {
     console.log("server is on 6000");

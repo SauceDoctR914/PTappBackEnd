@@ -22,7 +22,7 @@ export const getMany = model => async (req, res) => {
       .find({})
       .lean()
       .exec();
-    return res.status(200).json({ message: "hey" });
+    return res.status(200).json({ data: docs });
   } catch (e) {
     console.error(e);
     res.status(400).send({ message: "unable to process" });
