@@ -1,43 +1,29 @@
-// Uncomment following to enable zipkin tracing, tailor to fit your network configuration:
-// var appzip = require('appmetrics-zipkin')({
-//     host: 'localhost',
-//     port: 9411,
-//     serviceName:'frontend'
-// });
+import express from "express";
+import { json, urlencoded } from "body-parser";
+import morgan from "morgan";
+import config from "./config";
+import cors from "cors";
+import mongoose from "mongoose";
 
-require('appmetrics-dash').attach();
-require('appmetrics-prometheus').attach();
-const appName = require('./../package').name;
-const http = require('http');
-const express = require('express');
-const log4js = require('log4js');
-const localConfig = require('./config/local.json');
-const path = require('path');
+import userRouter from "./models/user.router";
+import exerciseRouter from "./models/exercise.router";
+import workoutplanRouter from "./models/workoutplan.router";
 
-const logger = log4js.getLogger(appName);
-logger.level = process.env.LOG_LEVEL || 'info'
-const app = express();
-const server = http.createServer(app);
+export const app = express();
+const router = express.Router();
+app.disable("x-powered-by");
 
-app.use(log4js.connectLogger(logger, { level: logger.level }));
-const serviceManager = require('./services/service-manager');
-require('./services/index')(app);
-require('./routers/index')(app, server);
+app.use(cors());
+app.use(json());
+app.use(urlencoded({ extended: true }));
+app.use(morgan("dev"));
 
-// Add your code here
+app.use("/api/user", userRouter);
+app.use("/api/excerise", exerciseRouter);
+app.use("/api/workoutplan", workoutplanRouter);
 
-const port = process.env.PORT || localConfig.port;
-server.listen(port, function(){
-  logger.info(`PTappNodeBackend listening on http://localhost:${port}/appmetrics-dash`);
-  logger.info(`PTappNodeBackend listening on http://localhost:${port}`);
-});
-
-app.use(function (req, res, next) {
-  res.sendFile(path.join(__dirname, '../public', '404.html'));
-});
-
-app.use(function (err, req, res, next) {
-	res.sendFile(path.join(__dirname, '../public', '500.html'));
-});
-
-module.exports = server;
+export const start = () => {
+  app.listen(4000, () => {
+    console.log("server is on 4000");
+  });
+};
