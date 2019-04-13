@@ -1,4 +1,4 @@
-import controllers from "./item.controllers";
+import controllers from "./workoutplan.controllers";
 import { Router } from "express";
 
 const router = Router();
