@@ -1,7 +1,7 @@
 import controllers from "./exercise.controllers";
-import { Router } from "express";
+import express, { Router } from "express";
 
-const router = Router();
+const router = express.Router();
 router
   .route("/")
   .get(controllers.getMany)

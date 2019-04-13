@@ -10,16 +10,18 @@ import exerciseRouter from "./models/exercise/exercise.router";
 import workoutplanRouter from "./models/workoutplan/workoutplan.router";
 
 export const app = express();
-const router = express.Router();
 app.disable("x-powered-by");
 
 app.use(cors());
 app.use(json());
 app.use(urlencoded({ extended: true }));
 app.use(morgan("dev"));
-
+console.log(exerciseRouter.stack[0].route);
 app.use("/api/user", userRouter);
-app.use("/api/excerise", exerciseRouter);
+app.use("/api/exercise", exerciseRouter);
+// app.get("/api/exercise", (req, res) => {
+//   res.send({ message: "hi" });
+// });
 app.use("/api/workoutplan", workoutplanRouter);
 
 export const start = () => {
