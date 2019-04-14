@@ -9,7 +9,7 @@ export const getOne = model => async (req, res) => {
     if (!doc) {
       return res.status(404).end();
     }
-    res.status(200).json({ data: doc });
+    res.status(200).json({ doc });
   } catch (e) {
     console.error(e);
     res.status(400).end();
@@ -19,7 +19,7 @@ export const getOne = model => async (req, res) => {
 export const getMany = model => async (req, res) => {
   try {
     const docs = await model.find({});
-    return res.status(200).send(docs);
+    return res.status(200).json(docs);
   } catch (e) {
     console.error(e);
     res.status(400).send({ message: "unable to process" });
@@ -30,7 +30,7 @@ export const createOne = model => async (req, res) => {
   const createdBy = req.body;
   try {
     const doc = await model.create(req.body);
-    res.status(201).send(doc);
+    res.status(201).json(doc);
   } catch (e) {
     console.error(e);
     res.status(400).end();
@@ -52,7 +52,7 @@ export const updateOne = model => async (req, res) => {
     if (!updatedDoc) {
       return res.status(400).end();
     }
-    res.status(200).json({ data: updatedDoc });
+    res.status(200).json({ updatedDoc });
   } catch (e) {
     console.error(e);
     res.status(400).end();
